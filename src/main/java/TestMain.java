@@ -2,8 +2,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 
 import static com.note_book.common.Constance.*;
+import static com.note_book.utils.FileUtil.saveFile;
 
 class TestMain extends Frame {
 
@@ -32,7 +34,19 @@ class TestMain extends Frame {
     private JButton getSubmitButton(TextArea text) {
         JButton button = new JButton(SUBMIT_BUTTON_NAME);
         button.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-        button.addActionListener(e -> System.out.println(text.getText()));
+        button.addActionListener(e -> {
+            try{
+                boolean isSaveFileSuccess = saveFile(text.getText(), TEST_FILE_NAME_WITH_SUFFIX);
+                if(isSaveFileSuccess) {
+                    System.out.println(TEST_FILE_NAME_WITH_SUFFIX + "文件保存成功！");
+                }else {
+                    System.out.println(TEST_FILE_NAME_WITH_SUFFIX + "文件保存失败！");
+                }
+            } catch (IOException e1) {
+                e1.printStackTrace();
+                System.out.println("文件保存失败！");
+            }
+        });
         return button;
     }
 
